@@ -40,13 +40,7 @@ onMounted(() => {
       <div class="p-2 space-y-2 rounded-md bg-neutral-100 dark:bg-neutral-700">
         <p>
         
-          <a
-            class="text-blue-600 dark:text-blue-500"
-            href="https://github.com/Chanzhaoyu/chatgpt-web"
-            target="_blank"
-          >
-            Github
-          </a>
+        
        
         </p>
         <p>
