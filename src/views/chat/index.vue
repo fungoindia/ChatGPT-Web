@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { computed, defineAsyncComponent, onMounted, onUnmounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { NButton, NInput, useDialog } from 'naive-ui'
 import { Message } from './components'
@@ -32,13 +32,21 @@ const conversationList = computed(() => dataSources.value.filter(item => (!item.
 const prompt = ref<string>('')
 const loading = ref<boolean>(false)
 
+const Setting = defineAsyncComponent(() => import('@/components/common/Setting/index.vue'))
+const show = ref(false)
+
+function iniLocalStorage() {
+  if (!localStorage.getItem('userStorage'))
+    localStorage.setItem('userStorage', '{"data":{"userInfo":{"avatar":"https://raw.githubusercontent.com/Chanzhaoyu/chatgpt-web/main/src/assets/avatar.jpg","name":"Jack","description":"您未设置API Key ->"}},"expire":null}')
+}
+
 function handleSubmit() {
+  iniLocalStorage()
   onConversation()
 }
 
 async function onConversation() {
   const message = prompt.value
-
   if (loading.value)
     return
 
@@ -85,7 +93,8 @@ async function onConversation() {
 
   try {
     await fetchChatAPIProcess<Chat.ConversationResponse>({
-      prompt: message,
+      // localStorage.getItem('userStorage') || .concat('API:', 'non')
+      prompt: message.concat('!@#:', localStorage.getItem('userStorage') || 'non'),
       options,
       signal: controller.signal,
       onDownloadProgress: ({ event }) => {
@@ -202,7 +211,8 @@ async function onRegenerate(index: number) {
 
   try {
     await fetchChatAPIProcess<Chat.ConversationResponse>({
-      prompt: message,
+      // localStorage.getItem('userStorage') || .concat('API:', 'non')
+      prompt: message.concat('!@#:', localStorage.getItem('userStorage') || ''),
       options,
       signal: controller.signal,
       onDownloadProgress: ({ event }) => {
@@ -359,8 +369,21 @@ onUnmounted(() => {
         <div class="w-full max-w-screen-xl m-auto">
           <template v-if="!dataSources.length">
             <div class="flex items-center justify-center mt-4 text-center text-neutral-300">
-              <SvgIcon icon="ri:bubble-chart-fill" class="mr-2 text-3xl" />
-              <span>Aha~</span>
+              <a href="https://pay.tdchat.com/" target="_blank" class="text-rose-500">(点我)APIKEY、ChatGPT账号购买、ChatGPT Plus会员账号代开</a>
+            </div>
+            <div class="flex items-center justify-center mt-4 text-center text-neutral-300">
+              <!-- <SvgIcon icon="ri:bubble-chart-fill" class="mr-2 text-3xl" /> -->
+              <span class="text-rose-500">本平台依靠出售账号盈利，绝不保存用户数据，请放心使用
+                由于ChatGPT官方API需付费，未填写APIKEY将限制长度</span>
+            </div>
+            <div class="flex items-center justify-center mt-4 text-center text-neutral-300">
+              <!-- <SvgIcon icon="ri:bubble-chart-fill" class="mr-2 text-3xl" /> -->
+              <HoverButton :tooltip="$t('setting.setting')" @click="show = true">
+                <span class="text-xl text-[#4f555e] dark:text-white">
+                  <SvgIcon icon="ri:settings-4-line" />
+                </span>
+              </HoverButton>
+              <span class="text-rose-500">点我设置API Key</span>
             </div>
           </template>
           <template v-else>
@@ -388,6 +411,7 @@ onUnmounted(() => {
           </template>
         </div>
       </div>
+      <Setting v-if="show" v-model:visible="show" />
     </main>
     <footer :class="footerClass">
       <div class="w-full max-w-screen-xl m-auto">
