@@ -28,7 +28,7 @@ export default {
     config: 'Config',
     avatarLink: 'Avatar Link',
     name: 'Name',
-    description: 'Description',
+    description: 'API Key',
     resetUserInfo: 'Reset UserInfo',
     theme: 'Theme',
     language: 'Language',
