@@ -28,7 +28,7 @@ export default {
     config: '配置',
     avatarLink: '头像链接',
     name: '名称',
-    description: '描述',
+    description: 'API Key',
     resetUserInfo: '重置用户信息',
     theme: '主题',
     language: '语言',
