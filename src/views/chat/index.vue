@@ -368,14 +368,7 @@ onUnmounted(() => {
       >
         <div class="w-full max-w-screen-xl m-auto">
           <template v-if="!dataSources.length">
-            <div class="flex items-center justify-center mt-4 text-center text-neutral-300">
-              <a href="http://150.158.17.36/" target="_blank" class="text-rose-500">(点我)APIKEY、ChatGPT账号购买、ChatGPT Plus会员账号代开</a>
-            </div>
-            <div class="flex items-center justify-center mt-4 text-center text-neutral-300">
-              <!-- <SvgIcon icon="ri:bubble-chart-fill" class="mr-2 text-3xl" /> -->
-              <span class="text-rose-500">本平台依靠出售账号盈利，绝不保存用户数据，请放心使用
-                由于ChatGPT官方API需付费，未填写APIKEY将限制长度</span>
-            </div>
+            
             <div class="flex items-center justify-center mt-4 text-center text-neutral-300">
               <!-- <SvgIcon icon="ri:bubble-chart-fill" class="mr-2 text-3xl" /> -->
               <HoverButton :tooltip="$t('setting.setting')" @click="show = true">
